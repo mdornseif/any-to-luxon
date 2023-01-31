@@ -4,12 +4,21 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Maximillian Dornseif",
-  "keywords": ['luxon', 'date', 'datetime','date parser'],
+  "keywords": ["luxon", "date", "datetime", "date parser"],
+  "homepage": "https://github.com/mdornseif/any-to-luxon",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdornseif/any-to-luxon.git"
+  },
+  "release": {
+    "branches": [
+      "main",
+      "next"
+    ]
+  },
   "main": "dist/index.js",
   "module": "dist/any-to-luxon.esm.js",
   "typings": "dist/index.d.ts",
-  "repository": "https://github.com/mdornseif/any-to-luxon",
-  "homepage": "https://github.com/mdornseif/any-to-luxon",
   "files": [
     "dist",
     "src"
@@ -29,8 +38,8 @@
     }
   },
   "prettier": {
-    "printWidth": 80,
-    "semi": true,
+    "printWidth": 110,
+    "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
   },
@@ -39,7 +48,7 @@
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">=12"
+    "node": ">=16"
   },
   "size-limit": [
     {
