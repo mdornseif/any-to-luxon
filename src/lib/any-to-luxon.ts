@@ -1,8 +1,8 @@
 /*
  * any-to-luxon.ts
- * 
- * Created by Dr. Maximillian Dornseif 2023-01-31 in any-to-luxon 0.1.0
- * Copyright (c) 2023 Dr. Maximillian Dornseif
+ *
+ * Created by Dr. Maximillian Dornseif 2019
+ * Copyright (c) 2019-2023  Maximillian Dornseif
  */
 
 import { DateTime } from 'luxon'
@@ -10,19 +10,47 @@ import { DateTime } from 'luxon'
 /** convert anything into a luxon.DateTime
  *  see https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html
  */
-export function dateTimeify<T>(val: T): T | DateTime {
-  if (typeof val === 'string') {
+export function dateTimeify<T>(val: T): DateTime | T {
+  if (val instanceof DateTime) {
+    // luxon.DateTime
+    return val
+  } else if (val instanceof Date) {
+    // Javascript Date()
+    return DateTime.fromJSDate(val)
+  } else if (typeof val === 'string') {
     if (val.match(/\d{13,14}/)) {
-      // legacy datastore
-      return DateTime.fromSeconds(parseInt(val) / 1000)
+      // legacy datastore (Python2, db module) sometimes stores milliseconds as string
+      return DateTime.fromMillis(parseInt(val))
+    } else if (val.match(/\d{10,12}/)) {
+      // Unix epoch seconds
+      return DateTime.fromSeconds(parseInt(val))
+    } else {
+      // (Hopefully) an ISO String
+      return DateTime.fromISO(val.replace(' ', 'T'))
     }
-    return DateTime.fromISO(val.replace(' ', 'T'))
   } else if (val && 'toDate' in (val as object)) {
     // moment.js objects
     return DateTime.fromJSDate((val as any).toDate())
-  } else if (Object.prototype.toString.call(val) === "[object Date]") {
-    // plain Javascript Dates
-    return DateTime.fromJSDate(val as Date)
+  } else if (val && 'value' in (val as object)) {
+    // BigQuery and Datastore results sometimes are nested
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    return dateTimeify<T>((val as any)['value'])
+  } else if (typeof val === 'number') {
+    if (val > 2 ** 31) {
+      // legacy datastore (Python2, db module) sometimes stores milliseconds as numbers
+      return DateTime.fromMillis(val)
+    } else {
+      return DateTime.fromSeconds(val)
+    }
   }
   return val
+}
+
+export function dateTimeifyTyped(val: any): DateTime {
+  const ret = dateTimeify(val)
+  if (ret instanceof DateTime) {
+    return ret
+  }
+  return DateTime.invalid('unparsable', `the input "${val}" can't be parsed as DateTime`)
+  // or: throw new Error(`unknown Date Value: ${JSON.stringify(val)} (${typeof val})`)
 }

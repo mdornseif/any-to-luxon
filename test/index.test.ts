@@ -1,12 +1,12 @@
 /*
  * index.test.ts
- * 
+ *
  * Created by Dr. Maximillian Dornseif 2023-01-31 in any-to-luxon 0.1.0
  * Copyright (c) 2023 HUDORA GmbH
  */
 
 import { DateTime } from 'luxon'
-import { dateTimeify } from '../src/index';
+import { dateTimeify, dateTimeifyTyped } from '../src/index'
 
 describe('dateTimeify', () => {
   it('handles Strings', () => {
@@ -37,5 +37,20 @@ describe('dateTimeify', () => {
       `"2020-01-11T10:09:08.000+00:00"`
     )
   })
-  
-});
+})
+
+describe('dateTimeifyTyped', () => {
+  it('handles new Date()', () => {
+    expect(dateTimeifyTyped(new Date(2019, 10, 1))).toMatchInlineSnapshot(`"2019-11-01T00:00:00.000+00:00"`)
+  })
+  it('handles new Date()', () => {
+    expect(dateTimeifyTyped('2030-40-50T:60:70:80')).toMatchInlineSnapshot(`null`)
+  })
+
+  it('handles null', () => {
+    expect(dateTimeifyTyped(null)).toMatchInlineSnapshot(`null`)
+  })
+  it('handles undefined', () => {
+    expect(dateTimeifyTyped(undefined)).toMatchInlineSnapshot(`null`)
+  })
+})
