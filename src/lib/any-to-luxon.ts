@@ -28,13 +28,6 @@ export function dateTimeify<T>(val: T): DateTime | T {
       // (Hopefully) an ISO String
       return DateTime.fromISO(val.replace(' ', 'T'))
     }
-  } else if (val && 'toDate' in (val as object)) {
-    // moment.js objects
-    return DateTime.fromJSDate((val as any).toDate())
-  } else if (val && 'value' in (val as object)) {
-    // BigQuery and Datastore results sometimes are nested
-    // eslint-disable-next-line @typescript-eslint/dot-notation
-    return dateTimeify<T>((val as any)['value'])
   } else if (typeof val === 'number') {
     if (val > 2 ** 31) {
       // legacy datastore (Python2, db module) sometimes stores milliseconds as numbers
@@ -42,6 +35,13 @@ export function dateTimeify<T>(val: T): DateTime | T {
     } else {
       return DateTime.fromSeconds(val)
     }
+  } else if (val != null && typeof val === 'object' && 'toDate' in (val as object)) {
+    // moment.js objects
+    return DateTime.fromJSDate((val as any).toDate())
+  } else if (val != null && typeof val === 'object' && 'value' in (val as object)) {
+    // BigQuery and Datastore results sometimes are nested
+    // eslint-disable-next-line @typescript-eslint/dot-notation
+    return dateTimeify<T>((val as any)['value'])
   }
   return val
 }

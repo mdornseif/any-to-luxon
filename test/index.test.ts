@@ -37,6 +37,10 @@ describe('dateTimeify', () => {
       `"2020-01-11T10:09:08.000+00:00"`
     )
   })
+  it('handles numbers', () => {
+    expect(dateTimeify(1314748800000)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+    expect(dateTimeify(1314748800)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+  })
 })
 
 describe('dateTimeifyTyped', () => {
