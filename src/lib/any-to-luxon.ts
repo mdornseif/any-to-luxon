@@ -26,7 +26,7 @@ export function dateTimeify<T>(val: T): DateTime | T {
       return DateTime.fromSeconds(parseInt(val))
     } else {
       // (Hopefully) an ISO String
-      return DateTime.fromISO(val.replace(' ', 'T'))
+      return DateTime.fromISO(val.replace(' ', 'T'), { zone: 'UTC' })
     }
   } else if (typeof val === 'number') {
     if (val > 2 ** 31) {

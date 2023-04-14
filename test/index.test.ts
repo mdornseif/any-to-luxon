@@ -10,13 +10,13 @@ import { dateTimeify, dateTimeifyTyped } from '../src/index'
 
 describe('dateTimeify', () => {
   it('handles Strings', () => {
-    expect(dateTimeify('2010-11-01')).toMatchInlineSnapshot(`"2010-11-01T00:00:00.000+00:00"`)
-    expect(dateTimeify('2010-11-01 23:22:21.456789')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.456+00:00"`)
-    expect(dateTimeify('2010-11-01T23:22:21')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.000+00:00"`)
-    expect(dateTimeify('2010-11-01T23:22:21Z')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.000+00:00"`)
-    expect(dateTimeify('2022-02-01T15:53:43.388Z')).toMatchInlineSnapshot(`"2022-02-01T15:53:43.388+00:00"`)
+    expect(dateTimeify('2010-11-01')).toMatchInlineSnapshot(`"2010-11-01T00:00:00.000Z"`)
+    expect(dateTimeify('2010-11-01 23:22:21.456789')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.456Z"`)
+    expect(dateTimeify('2010-11-01T23:22:21')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.000Z"`)
+    expect(dateTimeify('2010-11-01T23:22:21Z')).toMatchInlineSnapshot(`"2010-11-01T23:22:21.000Z"`)
+    expect(dateTimeify('2022-02-01T15:53:43.388Z')).toMatchInlineSnapshot(`"2022-02-01T15:53:43.388Z"`)
     expect(dateTimeify('2021-04-21 11:06:39.814722+00:00')).toMatchInlineSnapshot(
-      `"2021-04-21T11:06:39.814+00:00"`
+      `"2021-04-21T11:06:39.814Z"`
     )
   })
   it('handles moment.js', () => {
@@ -47,7 +47,18 @@ describe('dateTimeifyTyped', () => {
   it('handles new Date()', () => {
     expect(dateTimeifyTyped(new Date(2019, 10, 1))).toMatchInlineSnapshot(`"2019-11-01T00:00:00.000+00:00"`)
   })
-  it('handles new Date()', () => {
+  it('handles Strings', () => {
+    expect(dateTimeifyTyped('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
+    expect(dateTimeifyTyped('1234-05-06T07:08:09.123Z')).toMatchInlineSnapshot('"1234-05-06T07:08:09.123Z"')
+    expect(dateTimeifyTyped('1234-05-06T07:08:09.123+00:00')).toMatchInlineSnapshot(
+      '"1234-05-06T07:08:09.123Z"'
+    )
+    expect(dateTimeifyTyped('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
+    expect(dateTimeifyTyped('1234-05-06T07:08:09.123').toJSDate()).toMatchInlineSnapshot(
+      `1234-05-06T07:08:09.123Z`
+    )
+  })
+  it('handles invalid Strings', () => {
     expect(dateTimeifyTyped('2030-40-50T:60:70:80')).toMatchInlineSnapshot(`null`)
   })
 

@@ -1,76 +1,97 @@
 {
-  "name": "any-to-luxon",
-  "description": "Converts various representations usually found in databases to luxon DateTime objects.",
-  "version": "0.1.0",
-  "license": "MIT",
-  "author": "Maximillian Dornseif",
-  "keywords": ["luxon", "date", "datetime", "date parser"],
-  "homepage": "https://github.com/mdornseif/any-to-luxon",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mdornseif/any-to-luxon.git"
+  "author" : "Maximillian Dornseif",
+  "dependencies" : {
+    "@types/luxon" : ">2",
+    "luxon" : ">2"
   },
-  "release": {
-    "branches": [
-      "main",
-      "next"
-    ]
+  "description" : "Converts various representations usually found in databases to luxon DateTime objects.",
+  "devDependencies" : {
+    "@size-limit/preset-small-lib" : "^8.1.2",
+    "@storybook/storybook-deployer" : "^2.8.16",
+    "@tsconfig/recommended" : "^1.0.2",
+    "dts-cli" : "^1.6.3",
+    "husky" : "^8.0.3",
+    "lint-staged" : "^13.1.1",
+    "size-limit" : "^8.1.2",
+    "sort-package-json" : "^2.4.1",
+    "tslib" : "^2.5.0",
+    "typescript" : "^4.9.5"
   },
-  "main": "dist/index.js",
-  "module": "dist/any-to-luxon.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
+  "engines" : {
+    "node" : ">=16"
+  },
+  "files" : [
     "dist",
     "src"
   ],
-  "scripts": {
-    "analyze": "size-limit --why",
-    "build": "dts build",
-    "lint": "dts lint",
-    "prepare": "dts build",
-    "size": "size-limit",
-    "start": "dts watch",
-    "test": "TZ=utc dts test"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "dts lint"
+  "homepage" : "https://github.com/mdornseif/any-to-luxon",
+  "husky" : {
+    "hooks" : {
+      "pre-commit" : "dts lint"
     }
   },
-  "prettier": {
-    "printWidth": 110,
-    "semi": false,
-    "singleQuote": true,
-    "trailingComma": "es5"
+  "jest" : {
+    "testEnvironment" : "node"
   },
-  "jest": {
-    "testEnvironment": "node"
+  "keywords" : [
+    "luxon",
+    "date",
+    "datetime",
+    "date parser"
+  ],
+  "license" : "MIT",
+  "lint-staged" : {
+    "*{css,scss,md,markdown,json,yaml,yml,graphql,html}" : "prettier -w",
+    "*{js,jsx,ts,tsx}" : [
+      "prettier -w",
+      "eslint --cache --fix"
+    ],
+    "package*json" : "sort-package-json"
   },
-  "peerDependencies": {},
-  "engines": {
-    "node": ">=16"
+  "main" : "dist/index.js",
+  "module" : "dist/any-to-luxon.esm.js",
+  "name" : "any-to-luxon",
+  "peerDependencies" : {
+
   },
-  "size-limit": [
+  "prettier" : {
+    "printWidth" : 110,
+    "semi" : false,
+    "singleQuote" : true,
+    "trailingComma" : "es5"
+  },
+  "release" : {
+    "branches" : [
+      "main",
+      "master",
+      "next"
+    ]
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "git+https://github.com/mdornseif/any-to-luxon.git"
+  },
+  "scripts" : {
+    "analyze" : "size-limit --why",
+    "build" : "dts build",
+    "lint" : "dts lint",
+    "prepare" : "husky install",
+    "size" : "size-limit",
+    "start" : "dts watch",
+    "storybook-deploy" : "storybook-to-ghpages",
+    "test" : "TZ=utc dts test --passWithNoTests",
+    "unimported" : "npx unimported; npx findead src"
+  },
+  "size-limit" : [
     {
-      "path": "dist/any-to-luxon.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit" : "10 KB",
+      "path" : "dist/any-to-luxon.cjs.production.min.js"
     },
     {
-      "path": "dist/any-to-luxon.esm.js",
-      "limit": "10 KB"
+      "limit" : "10 KB",
+      "path" : "dist/any-to-luxon.esm.js"
     }
   ],
-  "devDependencies": {
-    "@size-limit/preset-small-lib": "^8.1.2",
-    "@tsconfig/recommended": "^1.0.2",
-    "dts-cli": "^1.6.3",
-    "husky": "^8.0.3",
-    "size-limit": "^8.1.2",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "@types/luxon": ">2",
-    "luxon": ">2"
-  }
+  "typings" : "dist/index.d.ts",
+  "version" : "0.1.0"
 }
