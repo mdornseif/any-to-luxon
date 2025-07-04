@@ -51,6 +51,13 @@ export function dateTimeifyTyped(val: any): DateTime {
   if (ret instanceof DateTime) {
     return ret
   }
-  return DateTime.invalid('unparsable', `the input "${val}" can't be parsed as DateTime`)
+  // Handle cases where val might not be stringifiable (like Symbol)
+  let valStr: string
+  try {
+    valStr = typeof val === 'symbol' ? val.toString() : String(val)
+  } catch {
+    valStr = `[${typeof val}]`
+  }
+  return DateTime.invalid('unparsable', `the input "${valStr}" can't be parsed as DateTime`)
   // or: throw new Error(`unknown Date Value: ${JSON.stringify(val)} (${typeof val})`)
 }

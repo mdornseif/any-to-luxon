@@ -9,13 +9,15 @@
     "@size-limit/preset-small-lib" : "^8.1.2",
     "@storybook/storybook-deployer" : "^2.8.16",
     "@tsconfig/recommended" : "^1.0.2",
+    "@vitest/coverage-v8" : "^1.0.0",
     "dts-cli" : "^1.6.3",
     "husky" : "^8.0.3",
     "lint-staged" : "^13.1.1",
     "size-limit" : "^8.1.2",
     "sort-package-json" : "^2.4.1",
     "tslib" : "^2.5.0",
-    "typescript" : "^4.9.5"
+    "typescript" : "^4.9.5",
+    "vitest" : "^1.0.0"
   },
   "engines" : {
     "node" : ">=16"
@@ -30,9 +32,7 @@
       "pre-commit" : "dts lint"
     }
   },
-  "jest" : {
-    "testEnvironment" : "node"
-  },
+
   "keywords" : [
     "luxon",
     "date",
@@ -79,7 +79,10 @@
     "size" : "size-limit",
     "start" : "dts watch",
     "storybook-deploy" : "storybook-to-ghpages",
-    "test" : "TZ=utc dts test --passWithNoTests",
+    "test" : "TZ=utc vitest run",
+    "test:coverage" : "TZ=utc vitest run --coverage",
+    "test:run" : "TZ=utc vitest run",
+    "test:watch" : "TZ=utc vitest --watch",
     "unimported" : "npx unimported; npx findead src"
   },
   "size-limit" : [
