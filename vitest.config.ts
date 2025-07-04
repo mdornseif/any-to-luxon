@@ -3,11 +3,15 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     environment: 'node',
-    globals: true,
-    watch: false, // Prevent hanging in CI/automated environments
+    globals: false, // Disable globals to prevent potential hanging issues
+    watch: false,
+    run: true,
+    testTimeout: 5000,
+    hookTimeout: 5000,
+    teardownTimeout: 5000,
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      reporter: ['text'],
       exclude: [
         'node_modules/',
         'test/',
