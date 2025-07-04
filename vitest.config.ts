@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    watch: false, // Prevent hanging in CI/automated environments
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
