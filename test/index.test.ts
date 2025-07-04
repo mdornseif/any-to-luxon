@@ -183,4 +183,21 @@ describe('dateTimeifyTyped', () => {
     expect(result.isValid).toBe(false)
     expect(result.invalidReason).toBe('unparsable')
   })
+
+  it('handles objects that throw when converted to string', () => {
+    const problematicObject = {
+      toString: () => {
+        throw new Error('Cannot convert to string')
+      },
+      valueOf: () => {
+        throw new Error('Cannot convert to primitive')
+      }
+    }
+    
+    const result = dateTimeifyTyped(problematicObject)
+    expect(result).toBeInstanceOf(DateTime)
+    expect(result.isValid).toBe(false)
+    expect(result.invalidReason).toBe('unparsable')
+    expect(result.invalidExplanation).toContain('[object]')
+  })
 })
