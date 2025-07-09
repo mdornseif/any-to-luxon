@@ -60,6 +60,8 @@ describe('dateTimeify', () => {
     expect(dateTimeify(DateTime.fromISO('2020-01-11T10:09:08.000+00:00'))).toMatchInlineSnapshot(
       `"2020-01-11T10:09:08.000+00:00"`
     )
+    expect(dateTimeify( DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
+    `"2024-07-19T00:00:00.000+00:00"`)
   })
 
   it('handles numbers - milliseconds', () => {
@@ -144,6 +146,8 @@ describe('dateTimeifyTyped', () => {
   it('handles luxon DateTime objects', () => {
     const dt = DateTime.fromISO('2020-01-11T10:09:08.000+00:00')
     expect(dateTimeifyTyped(dt)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
+    expect(dateTimeifyTyped( DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
+    `"2024-07-19T00:00:00.000+00:00"`)
   })
 
   it('handles moment.js objects', () => {
