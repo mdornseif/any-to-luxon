@@ -60,8 +60,9 @@ describe('dateTimeify', () => {
     expect(dateTimeify(DateTime.fromISO('2020-01-11T10:09:08.000+00:00'))).toMatchInlineSnapshot(
       `"2020-01-11T10:09:08.000+00:00"`
     )
-    expect(dateTimeify( DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
-    `"2024-07-19T00:00:00.000+00:00"`)
+    expect(dateTimeify(DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
+      `"2024-07-19T00:00:00.000+00:00"`
+    )
   })
 
   it('handles numbers - milliseconds', () => {
@@ -79,7 +80,7 @@ describe('dateTimeify', () => {
   it('handles objects with nested value property', () => {
     const nestedValue = { value: '2020-01-11T10:09:08.000+00:00' }
     expect(dateTimeify(nestedValue)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000Z"`)
-    
+
     // Test deeply nested
     const deeplyNested = { value: { value: new Date(2019, 12, 1) } }
     expect(dateTimeify(deeplyNested)).toMatchInlineSnapshot(`"2020-01-01T00:00:00.000+00:00"`)
@@ -88,13 +89,13 @@ describe('dateTimeify', () => {
   it('handles unknown types by returning them as-is', () => {
     const symbol = Symbol('test')
     expect(dateTimeify(symbol)).toBe(symbol)
-    
+
     const func = () => 'test'
     expect(dateTimeify(func)).toBe(func)
-    
+
     const arr = [1, 2, 3]
     expect(dateTimeify(arr)).toBe(arr)
-    
+
     const plainObj = { foo: 'bar' }
     expect(dateTimeify(plainObj)).toBe(plainObj)
   })
@@ -146,8 +147,9 @@ describe('dateTimeifyTyped', () => {
   it('handles luxon DateTime objects', () => {
     const dt = DateTime.fromISO('2020-01-11T10:09:08.000+00:00')
     expect(dateTimeifyTyped(dt)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
-    expect(dateTimeifyTyped( DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
-    `"2024-07-19T00:00:00.000+00:00"`)
+    expect(dateTimeifyTyped(DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
+      `"2024-07-19T00:00:00.000+00:00"`
+    )
   })
 
   it('handles moment.js objects', () => {
@@ -195,9 +197,9 @@ describe('dateTimeifyTyped', () => {
       },
       valueOf: () => {
         throw new Error('Cannot convert to primitive')
-      }
+      },
     }
-    
+
     const result = dateTimeifyTyped(problematicObject)
     expect(result).toBeInstanceOf(DateTime)
     expect(result.isValid).toBe(false)
