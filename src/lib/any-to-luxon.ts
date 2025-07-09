@@ -11,7 +11,7 @@ import { DateTime } from 'luxon'
  *  see https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html
  */
 export function dateTimeify<T>(val: T): DateTime | T {
-  if (val instanceof DateTime) {
+  if (val instanceof DateTime || DateTime.isDateTime(val)) {
     // luxon.DateTime
     return val
   } else if (val instanceof Date) {
