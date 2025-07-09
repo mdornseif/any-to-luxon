@@ -48,7 +48,7 @@ export function dateTimeify<T>(val: T): DateTime | T {
 
 export function dateTimeifyTyped(val: any): DateTime {
   const ret = dateTimeify(val)
-  if (ret instanceof DateTime) {
+  if (val instanceof DateTime || DateTime.isDateTime(val)) {
     return ret
   }
   // Handle cases where val might not be stringifiable (like Symbol)
