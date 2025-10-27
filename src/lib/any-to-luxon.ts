@@ -48,7 +48,7 @@ export function dateTimeify<T>(val: T): DateTime | T {
 
 export function dateTimeifyTyped(val: any): DateTime {
   const ret = dateTimeify(val)
-  if (val instanceof DateTime || DateTime.isDateTime(val)) {
+  if (ret instanceof DateTime || DateTime.isDateTime(ret)) {
     return ret
   }
   // Handle cases where val might not be stringifiable (like Symbol)
@@ -58,6 +58,15 @@ export function dateTimeifyTyped(val: any): DateTime {
   } catch {
     valStr = `[${typeof val}]`
   }
-  return DateTime.invalid('unparsable', `the input "${valStr}" can't be parsed as DateTime`)
   // or: throw new Error(`unknown Date Value: ${JSON.stringify(val)} (${typeof val})`)
+  return DateTime.invalid('unparsable', `the input "${valStr}" can't be parsed as DateTime`)
+}
+
+export function dateTimeifyOrThrow(val: any): DateTime<true> {
+  const ret = dateTimeifyTyped(val)
+  if (ret.isValid) {
+    return ret
+  }
+  console.error("unknown Date Value:", val)
+  throw new Error(`unknown Date Value: ${JSON.stringify(val)} (${typeof val})`)
 }
