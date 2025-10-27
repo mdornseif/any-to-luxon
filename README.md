@@ -6,6 +6,8 @@ with data returned by databases. First usecase was
 data in Google Cloud Datastore where every generation of
 client libraries messes up date objects in new and interesting ways.
 
+`any-to-luxon.dateTimeifyOrThrow()` guarantees to return a `valid` DateTime Object.
+
 any-to-luxon tries to follow modern (ES2020 etc.) practices and is Typescript and ESM friendly. 
 No monkey-patching of built-in prototypes.
 
