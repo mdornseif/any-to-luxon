@@ -208,90 +208,92 @@ describe('dateTimeifyTyped', () => {
   })
 })
 
-  describe('dateTimeifyOrThrow', () => {
-    it('handles new Date()', () => {
-      expect(dateTimeifyOrThrow(new Date(2019, 10, 1))).toMatchInlineSnapshot(`"2019-11-01T00:00:00.000+00:00"`)
-    })
-  
-    it('handles valid Strings', () => {
-      expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
-      expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123Z')).toMatchInlineSnapshot('"1234-05-06T07:08:09.123Z"')
-      expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123+00:00')).toMatchInlineSnapshot(
-        '"1234-05-06T07:08:09.123Z"'
-      )
-      expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
-      expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123').toJSDate()).toMatchInlineSnapshot(
-        `1234-05-06T07:08:09.123Z`
-      )
-    })
-  
-    it('handles timestamp strings', () => {
-      // Test millisecond timestamps as strings
-      expect(dateTimeifyOrThrow('1314748800000')).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
-      // Test second timestamps as strings
-      expect(dateTimeifyOrThrow('1314748800')).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
-    })
-  
-    it('handles numbers', () => {
-      // Test millisecond timestamps
-      expect(dateTimeifyOrThrow(1314748800000)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
-      // Test second timestamps
-      expect(dateTimeifyOrThrow(1314748800)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
-    })
-  
-    it('handles luxon DateTime objects', () => {
-      const dt = DateTime.fromISO('2020-01-11T10:09:08.000+00:00')
-      expect(dateTimeifyOrThrow(dt)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
-      expect(dateTimeifyOrThrow(DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
-        `"2024-07-19T00:00:00.000+00:00"`
-      )
-    })
-  
-    it('handles moment.js objects', () => {
-      const val = { toDate: () => new Date(2019, 12, 11, 10, 9, 8) }
-      expect(dateTimeifyOrThrow(val)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
-    })
-  
-    it('handles objects with nested value property', () => {
-      const nestedValue = { value: '2020-01-11T10:09:08.000+00:00' }
-      expect(dateTimeifyOrThrow(nestedValue)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000Z"`)
-    })
-  
-    it('handles invalid Strings', () => {
-      expect(() => dateTimeifyOrThrow('2030-40-50T:60:70:80')).toThrow('unknown Date Value: "2030-40-50T:60:70:80" (string)')
-      expect(() => dateTimeifyOrThrow('invalid-date')).toThrow('unknown Date Value: "invalid-date" (string)')
-      expect(() => dateTimeifyOrThrow('')).toThrow('unknown Date Value: "" (string)')
-    })
-  
-    it('handles null', () => {
-      expect(() => dateTimeifyOrThrow(null)).toThrow('unknown Date Value: null (object)')
-    })
-  
-    it('handles undefined', () => {
-      expect(() => dateTimeifyOrThrow(undefined)).toThrow('unknown Date Value: undefined (undefined)')
-    })
-  
-    it('handles unparseable values', () => {
-      expect(() => dateTimeifyOrThrow({ foo: 'bar' })).toThrow('unknown Date Value: {"foo":"bar"} (object)')
-      expect(() => dateTimeifyOrThrow([1, 2, 3])).toThrow('unknown Date Value: [1,2,3] (object)')
-      expect(() => dateTimeifyOrThrow(Symbol('test'))).toThrow('unknown Date Value: undefined (symbol)')  
-      expect(() => dateTimeifyOrThrow(() => 'test')).toThrow('unknown Date Value: undefined (function)')    
-    })
-  
-    it('returns invalid DateTime for unparseable values', () => {
-      expect(() => dateTimeifyOrThrow({ foo: 'bar' })).toThrow('unknown Date Value: {"foo":"bar"} (object)')
-    })
-  
-    it('handles objects that throw when converted to string', () => {
-      const problematicObject = {
-        toString: () => {
-          throw new Error('Cannot convert to string')
-        },
-        valueOf: () => {
-          throw new Error('Cannot convert to primitive')
-        },
-      }
-  
-      expect(() => dateTimeifyOrThrow(problematicObject)).toThrow('unknown Date Value: {} (object)')
+describe('dateTimeifyOrThrow', () => {
+  it('handles new Date()', () => {
+    expect(dateTimeifyOrThrow(new Date(2019, 10, 1))).toMatchInlineSnapshot(`"2019-11-01T00:00:00.000+00:00"`)
+  })
+
+  it('handles valid Strings', () => {
+    expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
+    expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123Z')).toMatchInlineSnapshot('"1234-05-06T07:08:09.123Z"')
+    expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123+00:00')).toMatchInlineSnapshot(
+      '"1234-05-06T07:08:09.123Z"'
+    )
+    expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123')).toMatchInlineSnapshot(`"1234-05-06T07:08:09.123Z"`)
+    expect(dateTimeifyOrThrow('1234-05-06T07:08:09.123').toJSDate()).toMatchInlineSnapshot(
+      `1234-05-06T07:08:09.123Z`
+    )
+  })
+
+  it('handles timestamp strings', () => {
+    // Test millisecond timestamps as strings
+    expect(dateTimeifyOrThrow('1314748800000')).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+    // Test second timestamps as strings
+    expect(dateTimeifyOrThrow('1314748800')).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+  })
+
+  it('handles numbers', () => {
+    // Test millisecond timestamps
+    expect(dateTimeifyOrThrow(1314748800000)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+    // Test second timestamps
+    expect(dateTimeifyOrThrow(1314748800)).toMatchInlineSnapshot(`"2011-08-31T00:00:00.000+00:00"`)
+  })
+
+  it('handles luxon DateTime objects', () => {
+    const dt = DateTime.fromISO('2020-01-11T10:09:08.000+00:00')
+    expect(dateTimeifyOrThrow(dt)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
+    expect(dateTimeifyOrThrow(DateTime.fromISO('2024-07-19T00:00:00'))).toMatchInlineSnapshot(
+      `"2024-07-19T00:00:00.000+00:00"`
+    )
+  })
+
+  it('handles moment.js objects', () => {
+    const val = { toDate: () => new Date(2019, 12, 11, 10, 9, 8) }
+    expect(dateTimeifyOrThrow(val)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000+00:00"`)
+  })
+
+  it('handles objects with nested value property', () => {
+    const nestedValue = { value: '2020-01-11T10:09:08.000+00:00' }
+    expect(dateTimeifyOrThrow(nestedValue)).toMatchInlineSnapshot(`"2020-01-11T10:09:08.000Z"`)
+  })
+
+  it('handles invalid Strings', () => {
+    expect(() => dateTimeifyOrThrow('2030-40-50T:60:70:80')).toThrow(
+      'unknown Date Value: "2030-40-50T:60:70:80" (string)'
+    )
+    expect(() => dateTimeifyOrThrow('invalid-date')).toThrow('unknown Date Value: "invalid-date" (string)')
+    expect(() => dateTimeifyOrThrow('')).toThrow('unknown Date Value: "" (string)')
+  })
+
+  it('handles null', () => {
+    expect(() => dateTimeifyOrThrow(null)).toThrow('unknown Date Value: null (object)')
+  })
+
+  it('handles undefined', () => {
+    expect(() => dateTimeifyOrThrow(undefined)).toThrow('unknown Date Value: undefined (undefined)')
+  })
+
+  it('handles unparseable values', () => {
+    expect(() => dateTimeifyOrThrow({ foo: 'bar' })).toThrow('unknown Date Value: {"foo":"bar"} (object)')
+    expect(() => dateTimeifyOrThrow([1, 2, 3])).toThrow('unknown Date Value: [1,2,3] (object)')
+    expect(() => dateTimeifyOrThrow(Symbol('test'))).toThrow('unknown Date Value: undefined (symbol)')
+    expect(() => dateTimeifyOrThrow(() => 'test')).toThrow('unknown Date Value: undefined (function)')
+  })
+
+  it('returns invalid DateTime for unparseable values', () => {
+    expect(() => dateTimeifyOrThrow({ foo: 'bar' })).toThrow('unknown Date Value: {"foo":"bar"} (object)')
+  })
+
+  it('handles objects that throw when converted to string', () => {
+    const problematicObject = {
+      toString: () => {
+        throw new Error('Cannot convert to string')
+      },
+      valueOf: () => {
+        throw new Error('Cannot convert to primitive')
+      },
+    }
+
+    expect(() => dateTimeifyOrThrow(problematicObject)).toThrow('unknown Date Value: {} (object)')
   })
 })

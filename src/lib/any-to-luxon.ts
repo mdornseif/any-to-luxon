@@ -67,6 +67,6 @@ export function dateTimeifyOrThrow(val: any): DateTime<true> {
   if (ret.isValid) {
     return ret
   }
-  console.error("unknown Date Value:", val)
+  console.error('unknown Date Value:', val)
   throw new Error(`unknown Date Value: ${JSON.stringify(val)} (${typeof val})`)
 }
